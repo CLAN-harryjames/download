@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAN | Family Tree Vault</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="CLAN">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+</head>
+<body>
+    <div id="password-gate" class="overlay">
+        <div class="card">
+            <h1>🔒 CLAN Vault</h1>
+            <p>Enter the family password to access the app.</p>
+            <input type="password" id="pass-input" placeholder="Password">
+            <button onclick="checkPassword()">Enter Vault</button>
+            <p id="error-msg" style="color: #ff4d4d; display: none;">Incorrect password.</p>
+        </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        <header>
+            <h1>CLAN</h1>
+            <p>Digital Family Tree & Heritage</p>
+        </header>
+
+        <section class="download-section">
+            <div class="platform-card">
+                <h2>🤖 Android</h2>
+                <p>Follow these steps exactly:</p>
+                <ul>
+                    <li>1. Download the <strong>CLAN.apk</strong> below.</li>
+                    <li>2. Tap "Install Anyway" if your phone warns you.</li>
+                    <li>3. If a scan pops up, select <strong>"Install without scanning"</strong>.</li>
+                </ul>
+                <a href="app-release.apk" class="btn">Download Android APK</a>
+            </div>
+
+            <div class="platform-card">
+                <h2>🍎 iPhone / iOS</h2>
+                <p>Follow these steps exactly:</p>
+                <ul>
+                    <li>1. Open this page in <strong>Safari</strong>.</li>
+                    <li>2. Tap the <strong>Share</strong> button (box with arrow).</li>
+                    <li>3. Select <strong>"Add to Home Screen"</strong>.</li>
+                </ul>
+                <a href="web/index.html" class="btn secondary">Launch Web App</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>SHA-256: <code>PASTE_YOUR_HASH_HERE</code></p>
+        </footer>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const pass = document.getElementById('pass-input').value;
+            // CHANGE "family2026" to whatever password you want!
+            if (pass === "family2026") {
+                document.getElementById('password-gate').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
