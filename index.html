@@ -10,62 +10,174 @@
     <link rel="apple-touch-icon" href="icons/Icon-192.png">
 </head>
 <body>
+
+    <!-- PASSWORD GATE -->
     <div id="password-gate" class="overlay">
         <div class="card">
-            <h1>🔒 CLAN Vault</h1>
-            <p>Enter the family password to access the app.</p>
-            <input type="password" id="pass-input" placeholder="Password">
-            <button onclick="checkPassword()">Enter Vault</button>
-            <p id="error-msg" style="color: #ff4d4d; display: none;">Incorrect password.</p>
+            <div class="lock-icon">🔒</div>
+            <h1>CLAN Vault</h1>
+            <p>Enter the family password to continue.</p>
+            <input type="password" id="pass-input" placeholder="Family password" autocomplete="off">
+            <button id="enter-btn">Enter</button>
+            <p id="error-msg">Incorrect password. Try again.</p>
         </div>
     </div>
 
-    <div id="main-content" style="display: none;">
+    <!-- MAIN CONTENT (hidden until password correct) -->
+    <div id="main-content">
+
         <header>
-            <h1>CLAN</h1>
-            <p>Digital Family Tree & Heritage</p>
+            <div class="header-inner">
+                <h1>CLAN</h1>
+                <p>Bernabe Dumadag · Lucia Ruizol Family App</p>
+            </div>
         </header>
 
-        <section class="download-section">
-            <div class="platform-card">
-                <h2>🤖 Android</h2>
-                <p>Follow these steps exactly:</p>
-                <ul>
-                    <li>1. Download the <strong>CLAN.apk</strong> below.</li>
-                    <li>2. Tap "Install Anyway" if your phone warns you.</li>
-                    <li>3. If a scan pops up, select <strong>"scan, it will be only less than a minute"</strong>.</li>
-                </ul>
-                <a href="https://github.com/CLAN-harryjames/download/releases/download/v1.0.0/app-release.apk" class="btn">Download Android APK</a>
-            </div>
+        <main>
+            <p class="intro">Welcome to the family app. Choose your device below to get started.</p>
 
-            <div class="platform-card">
-                <h2>🍎 iPhone / iOS</h2>
-                <p>Follow these steps exactly:</p>
-                <ul>
-                    <li>1. Open this page in <strong>Safari</strong>.</li>
-                    <li>2. Tap the <strong>Share</strong> button (box with arrow).</li>
-                    <li>3. Select <strong>"Add to Home Screen"</strong>.</li>
-                </ul>
-                <a href="web/index.html" class="btn secondary">Launch Web App</a>
-            </div>
-        </section>
+            <section class="download-section">
+
+                <div class="platform-card">
+                    <div class="platform-icon">🤖</div>
+                    <h2>Android</h2>
+                    <p>Download and install the app directly on your phone.</p>
+                    <ol>
+                        <li>Tap the button below to download <strong>CLAN.apk</strong></li>
+                        <li>Open the downloaded file from your notifications</li>
+                        <li>If your phone warns you, tap <strong>"Install Anyway"</strong></li>
+                        <li>If a scan pops up, tap <strong>"Scan"</strong> and wait a moment</li>
+                    </ol>
+                    <a id="android-btn"
+                       href="https://github.com/CLAN-harryjames/download/releases/download/v1.0.0/app-release.apk"
+                       class="btn">
+                        ⬇ Download Android APK
+                    </a>
+                    <div class="counter" id="android-counter">
+                        <span class="counter-icon">📥</span>
+                        <span id="android-count">—</span> downloads
+                    </div>
+                </div>
+
+                <div class="platform-card">
+                    <div class="platform-icon">🍎</div>
+                    <h2>iPhone / iPad</h2>
+                    <p>Use the web version and add it to your home screen like an app.</p>
+                    <ol>
+                        <li>Open this page in <strong>Safari</strong> (not Chrome)</li>
+                        <li>Tap the <strong>Share</strong> button at the bottom of the screen</li>
+                        <li>Tap <strong>"Add to Home Screen"</strong></li>
+                        <li>Tap <strong>Add</strong> — the CLAN icon will appear on your home screen</li>
+                    </ol>
+                    <a id="ios-btn"
+                       href="https://clan-harryjames.github.io/CLAN/"
+                       class="btn secondary"
+                       target="_blank">
+                        🌐 Open Web App
+                    </a>
+                    <div class="counter" id="ios-counter">
+                        <span class="counter-icon">👆</span>
+                        <span id="ios-count">—</span> opens
+                    </div>
+                </div>
+
+            </section>
+        </main>
 
         <footer>
-            <p>SHA-256: <code>PASTE_YOUR_HASH_HERE</code></p>
+            <p class="footer-label">APK Integrity — SHA-256</p>
+            <code id="sha-hash">PASTE_YOUR_HASH_HERE</code>
+            <p class="sha-help">
+                To verify on Windows: open PowerShell and run<br>
+                <code>Get-FileHash .\app-release.apk -Algorithm SHA256</code><br>
+                The result must match the code above exactly.
+            </p>
+            <p class="footer-note">Admin approval required after registration &nbsp;·&nbsp; End-to-end encrypted</p>
         </footer>
+
     </div>
 
     <script>
-        function checkPassword() {
-            const pass = document.getElementById('pass-input').value;
-            // CHANGE "jamesrich" to whatever password you want!
-            if (pass === "jamesrich") {
+        // ── Password ──────────────────────────────────────────────────────────
+        // To regenerate the hash for a new password, open DevTools console and run:
+        //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourpassword'))
+        //     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+        const STORED_HASH = '390c6147c1cce5121ebf3c918b0f1f090b3053a50fa4f0758d219af26ef80f77';
+
+        async function hashInput(input) {
+            const encoded = new TextEncoder().encode(input);
+            const buffer = await crypto.subtle.digest('SHA-256', encoded);
+            return [...new Uint8Array(buffer)].map(x => x.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function checkPassword() {
+            const input = document.getElementById('pass-input').value;
+            if (!input) return;
+            const hash = await hashInput(input);
+            if (hash === STORED_HASH) {
                 document.getElementById('password-gate').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
+                loadCounters();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
+                document.getElementById('pass-input').select();
             }
         }
+
+        // ── Counters ─────────────────────────────────────────────────────────
+
+        // Android: real download count from GitHub Releases API (no auth needed for public repos)
+        async function loadAndroidCount() {
+            try {
+                const res = await fetch('https://api.github.com/repos/CLAN-harryjames/download/releases/latest');
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                const asset = (data.assets || []).find(a => a.name === 'app-release.apk');
+                const count = asset ? asset.download_count : 0;
+                document.getElementById('android-count').textContent = count.toLocaleString();
+            } catch {
+                document.getElementById('android-counter').style.display = 'none';
+            }
+        }
+
+        // iOS: CounterAPI — free anonymous hit counter, no signup needed
+        // GET  https://api.counterapi.dev/v1/{namespace}/{key}       → { count }
+        // POST https://api.counterapi.dev/v1/{namespace}/{key}/up    → { count } (increments)
+        async function loadIosCount() {
+            try {
+                const res = await fetch('https://api.counterapi.dev/v1/clan-harryjames/ios-opens');
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                document.getElementById('ios-count').textContent = (data.count || 0).toLocaleString();
+            } catch {
+                document.getElementById('ios-counter').style.display = 'none';
+            }
+        }
+
+        function loadCounters() {
+            loadAndroidCount();
+            loadIosCount();
+        }
+
+        // iOS button: increment counter on click (fire-and-forget so navigation isn't blocked)
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('enter-btn').addEventListener('click', checkPassword);
+
+            document.getElementById('pass-input').addEventListener('keydown', e => {
+                if (e.key === 'Enter') checkPassword();
+                document.getElementById('error-msg').style.display = 'none';
+            });
+
+            document.getElementById('ios-btn').addEventListener('click', () => {
+                fetch('https://api.counterapi.dev/v1/clan-harryjames/ios-opens/up', { method: 'POST' })
+                    .then(r => r.json())
+                    .then(data => {
+                        document.getElementById('ios-count').textContent = (data.count || 0).toLocaleString();
+                    })
+                    .catch(() => {});
+            });
+        });
     </script>
+
 </body>
 </html>
