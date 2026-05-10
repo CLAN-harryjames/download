@@ -37,12 +37,12 @@
             <section class="quick-download">
                 <p>Install the CLAN family app for Android, or open the web app for iPhone and iPad.</p>
                 <div class="quick-actions">
-                    <a
+                    <a id="android-btn"
                        href="https://github.com/CLAN-harryjames/download/releases/download/v1.1.0/app-release.apk"
                        class="btn">
                         Download Android APK
                     </a>
-                    <a
+                    <a id="ios-btn"
                        href="https://clan-harryjames.github.io/download/web/"
                        class="btn secondary"
                        target="_blank">
@@ -65,11 +65,6 @@
                         <li>If your phone warns you, tap <strong>"Install Anyway"</strong></li>
                         <li>If a scan pops up, tap <strong>"Scan"</strong> and wait a moment</li>
                     </ol>
-                    <a id="android-btn"
-                       href="https://github.com/CLAN-harryjames/download/releases/download/v1.1.0/app-release.apk"
-                       class="btn">
-                        Download Android APK
-                    </a>
                     <div class="counter" id="android-counter">
                         <span class="counter-icon">Downloads</span>
                         <span id="android-count">-</span>
@@ -86,12 +81,6 @@
                         <li>Tap <strong>"Add to Home Screen"</strong></li>
                         <li>Tap <strong>Add</strong> - the CLAN icon will appear on your home screen</li>
                     </ol>
-                    <a id="ios-btn"
-                       href="https://clan-harryjames.github.io/download/web/"
-                       class="btn secondary"
-                       target="_blank">
-                        Open Web App
-                    </a>
                     <div class="counter" id="ios-counter">
                         <span class="counter-icon">Opens</span>
                         <span id="ios-count">-</span>
@@ -176,7 +165,7 @@
             loadIosCount();
         }
 
-        // iOS button: increment counter on click (fire-and-forget so navigation isn't blocked)
+        // Web app button: increment counter on click (fire-and-forget so navigation isn't blocked)
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('enter-btn').addEventListener('click', checkPassword);
 
