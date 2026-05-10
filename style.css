@@ -57,18 +57,15 @@ body {
     max-width: 420px;
 }
 
-.lock-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
+.family-mark {
+    display: inline-block;
     margin-bottom: 0.9rem;
-    border-radius: 50%;
-    background: rgba(0, 172, 193, 0.12);
-    color: var(--cyan);
-    font-size: 1.35rem;
+    color: var(--navy);
+    font-size: 0.95rem;
     font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.35;
+    text-transform: uppercase;
 }
 
 .card h1 {
@@ -167,6 +164,29 @@ main {
     margin: 0 auto 1.8rem;
     font-size: 1rem;
     max-width: 620px;
+}
+
+.quick-download {
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin: 0 auto 1.4rem;
+    max-width: 760px;
+    padding: 1.2rem;
+    text-align: center;
+}
+
+.quick-download p {
+    color: var(--deep-navy);
+    font-size: 0.98rem;
+    margin-bottom: 1rem;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
 }
 
 /* Download Cards */
@@ -345,6 +365,10 @@ footer code, #sha-hash {
 
     .platform-card {
         padding: 1.25rem;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
     }
 
     .card {
